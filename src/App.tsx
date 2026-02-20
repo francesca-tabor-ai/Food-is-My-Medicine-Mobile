@@ -14,7 +14,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import Chat from './components/Chat';
 import LabUpload from './components/LabUpload';
 import Dashboard from './components/Dashboard';
-import NutritionPlan from './components/NutritionPlan';
+import MealPlan from './components/MealPlan';
 import { LabResult } from './types';
 import { cn } from './lib/utils';
 
@@ -160,7 +160,7 @@ export default function App() {
                 {activeTab === 'chat' && <Chat />}
                 {activeTab === 'upload' && <LabUpload onUploadSuccess={handleUploadSuccess} />}
                 {activeTab === 'dashboard' && labResult && <Dashboard labResult={labResult} />}
-                {activeTab === 'nutrition' && labResult && <NutritionPlan labResult={labResult} />}
+                {activeTab === 'nutrition' && labResult && <MealPlan labResult={labResult} />}
               </motion.div>
             </AnimatePresence>
           </div>

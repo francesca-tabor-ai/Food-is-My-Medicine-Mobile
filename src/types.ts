@@ -38,3 +38,15 @@ export type Message = {
   text: string;
   timestamp: number;
 };
+
+export type MealSlot = 'breakfast' | 'lunch' | 'dinner';
+
+export type DayPlan = {
+  date: string; // YYYY-MM-DD
+  dayLabel: string; // Mon, Tue, ...
+  breakfast?: Recipe;
+  lunch?: Recipe;
+  dinner?: Recipe;
+};
+
+export type WeekPlan = DayPlan[];

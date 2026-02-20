@@ -3,7 +3,7 @@ import { Send, Mic, User, Bot, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Markdown from 'react-markdown';
 import { Message } from '../types';
-import { generateChatResponse } from '../services/gemini';
+import { generateChatResponse } from '../services/ai';
 import { cn } from '../lib/utils';
 
 export default function Chat() {

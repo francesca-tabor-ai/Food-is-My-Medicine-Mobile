@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Upload, FileText, CheckCircle2, AlertCircle, Loader2, Camera } from 'lucide-react';
 import { motion } from 'motion/react';
-import { analyzeLabResults } from '../services/gemini';
+import { analyzeLabResults } from '../services/ai';
 import { LabResult } from '../types';
 import { cn } from '../lib/utils';
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Utensils, Clock, Heart, ChevronRight, ShoppingCart, Loader2, Sparkles } from 'lucide-react';
+import { Utensils, Clock, Heart, ChevronRight, ShoppingCart, Loader2, Sparkles, X } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Recipe, LabResult } from '../types';
-import { getPersonalizedRecipes } from '../services/gemini';
+import { getPersonalizedRecipes } from '../services/ai';
 import { cn } from '../lib/utils';
 
 interface NutritionPlanProps {

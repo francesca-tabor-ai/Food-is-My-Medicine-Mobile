@@ -2,7 +2,10 @@ import OpenAI from "openai";
 import { LabResult, Recipe } from "../../types";
 import { LAB_JSON_INSTRUCTION, RECIPES_JSON_INSTRUCTION, SYSTEM_INSTRUCTION } from "../constants";
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || '' });
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY || '',
+  dangerouslyAllowBrowser: true, // This app runs in the browser; API key is in env. Use a backend proxy in production for better security.
+});
 
 function toOpenAIMessages(messages: { role: 'user' | 'model'; parts: { text: string }[] }[]): OpenAI.Chat.Completions.ChatCompletionMessageParam[] {
   return messages.map((m) => ({

@@ -1,0 +1,7 @@
+{
+  "name": "Food is My Medicine - Mobile App",
+  "description": "A precision nutrition platform that transforms blood test results into personalised nutrition, recipes, and automated food purchasing through an AI chatbot.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

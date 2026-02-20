@@ -2,10 +2,14 @@ import OpenAI from "openai";
 import { LabResult, Recipe } from "../../types";
 import { LAB_JSON_INSTRUCTION, RECIPES_JSON_INSTRUCTION, SYSTEM_INSTRUCTION } from "../constants";
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || '',
-  dangerouslyAllowBrowser: true, // This app runs in the browser; API key is in env. Use a backend proxy in production for better security.
-});
+let _client: OpenAI | null = null;
+function getClient(): OpenAI {
+  if (!_client) {
+    const apiKey = process.env.OPENAI_API_KEY || '';
+    _client = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
+  }
+  return _client;
+}
 
 function toOpenAIMessages(messages: { role: 'user' | 'model'; parts: { text: string }[] }[]): OpenAI.Chat.Completions.ChatCompletionMessageParam[] {
   return messages.map((m) => ({
@@ -15,7 +19,7 @@ function toOpenAIMessages(messages: { role: 'user' | 'model'; parts: { text: str
 }
 
 export async function generateChatResponse(messages: { role: 'user' | 'model'; parts: { text: string }[] }[]): Promise<string> {
-  const completion = await client.chat.completions.create({
+  const completion = await getClient().chat.completions.create({
     model: 'gpt-4o-mini',
     messages: [
       { role: 'system', content: SYSTEM_INSTRUCTION },
@@ -26,7 +30,7 @@ export async function generateChatResponse(messages: { role: 'user' | 'model'; p
 }
 
 export async function analyzeLabResults(text: string): Promise<LabResult> {
-  const completion = await client.chat.completions.create({
+  const completion = await getClient().chat.completions.create({
     model: 'gpt-4o-mini',
     messages: [
       { role: 'system', content: SYSTEM_INSTRUCTION + '\n\n' + LAB_JSON_INSTRUCTION },
@@ -39,7 +43,7 @@ export async function analyzeLabResults(text: string): Promise<LabResult> {
 }
 
 export async function getPersonalizedRecipes(labResult: LabResult): Promise<Recipe[]> {
-  const completion = await client.chat.completions.create({
+  const completion = await getClient().chat.completions.create({
     model: 'gpt-4o-mini',
     messages: [
       { role: 'system', content: SYSTEM_INSTRUCTION + '\n\n' + RECIPES_JSON_INSTRUCTION },

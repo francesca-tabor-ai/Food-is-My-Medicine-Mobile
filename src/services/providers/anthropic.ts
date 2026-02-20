@@ -2,7 +2,14 @@ import Anthropic from "@anthropic-ai/sdk";
 import { LabResult, Recipe } from "../../types";
 import { LAB_JSON_INSTRUCTION, RECIPES_JSON_INSTRUCTION, SYSTEM_INSTRUCTION } from "../constants";
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' });
+let _client: Anthropic | null = null;
+function getClient(): Anthropic {
+  if (!_client) {
+    const apiKey = process.env.ANTHROPIC_API_KEY || '';
+    _client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true });
+  }
+  return _client;
+}
 
 function toAnthropicMessages(messages: { role: 'user' | 'model'; parts: { text: string }[] }[]): Anthropic.MessageParam[] {
   return messages.map((m) => ({
@@ -13,7 +20,7 @@ function toAnthropicMessages(messages: { role: 'user' | 'model'; parts: { text: 
 
 export async function generateChatResponse(messages: { role: 'user' | 'model'; parts: { text: string }[] }[]): Promise<string> {
   const msgs = toAnthropicMessages(messages);
-  const response = await client.messages.create({
+  const response = await getClient().messages.create({
     model: 'claude-sonnet-4-20250514',
     max_tokens: 1024,
     system: SYSTEM_INSTRUCTION,
@@ -29,7 +36,7 @@ function extractJson(text: string): string {
 }
 
 export async function analyzeLabResults(text: string): Promise<LabResult> {
-  const response = await client.messages.create({
+  const response = await getClient().messages.create({
     model: 'claude-sonnet-4-20250514',
     max_tokens: 1024,
     system: SYSTEM_INSTRUCTION + '\n\n' + LAB_JSON_INSTRUCTION,
@@ -41,7 +48,7 @@ export async function analyzeLabResults(text: string): Promise<LabResult> {
 }
 
 export async function getPersonalizedRecipes(labResult: LabResult): Promise<Recipe[]> {
-  const response = await client.messages.create({
+  const response = await getClient().messages.create({
     model: 'claude-sonnet-4-20250514',
     max_tokens: 1024,
     system: SYSTEM_INSTRUCTION + '\n\n' + RECIPES_JSON_INSTRUCTION,
